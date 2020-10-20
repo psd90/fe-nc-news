@@ -17,7 +17,6 @@ class Navbar extends Component {
         return (
             <nav>
                 {topics.map(topic => {
-                    // console.log(topic)
                     return <Link to={`/topics/${topic.slug}`} key={topic.slug}>{topic.slug}</Link>
                 })}
             </nav>
