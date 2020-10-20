@@ -9,7 +9,7 @@ import Articles from "./components/Articles";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App-div">
       <Navbar />
       <Header />
       <Router>

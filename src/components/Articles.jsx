@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import Loader from "./Loader"
+import ArticleCard from "./ArticleCard"
 
 class Articles extends Component {
   state = {
@@ -12,10 +13,12 @@ class Articles extends Component {
     const {topic} = this.props
     axios.get('https://nc-news-psd.herokuapp.com/api/articles', {params: {topic}}).then(({data:{articles}}) => {
       this.setState({articles, isLoading:false})
+      console.log(articles[0])
     })
   }
   componentDidMount() {
     this.fetchArticles()
+    
   }
   componentDidUpdate(prevProps, prevState) {
     if(prevProps.topic !== this.props.topic) {
@@ -23,14 +26,12 @@ class Articles extends Component {
     }
   }
   render() {
-    console.log(this.props)
     const {articles, isLoading} = this.state
     if (isLoading) return <Loader />
-    console.log(articles)
     return (
       <main>
         {articles.map(article => {
-          return <section key={article.article_id}>{article.title}</section>
+          return <ArticleCard {...article} key={article.article_id}/>
         })}
       </main>
     )
