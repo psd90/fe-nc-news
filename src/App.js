@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Articles from "./components/Articles";
+import Article from "./components/Article"
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Navbar />
       <Header />
       <Router>
+        <Article path="/articles/:article_id" />
         <Articles path="/" />
         <Articles path="/topics/:slug" />
       </Router>
