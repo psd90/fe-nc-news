@@ -1,28 +1,43 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Loader from './Loader';
+import ErrorDisplay from './ErrorDisplay';
+import { getArticleById } from '../api';
+import  VoteUpdater  from './VoteUpdater';
+
 
 class Article extends Component {
     state = {
         articleInfo: {},
-        isLoading: true
-    }
+        isLoading: true,
+        error: null
+    };
+
+
     componentDidMount() {
-        axios.get(`https://nc-news-psd.herokuapp.com/api/articles/${this.props.article_id}`)
+        getArticleById(this.props.article_id)
         .then(({data}) => {
-            this.setState({articleInfo:data.article, isLoading:false})
+            this.setState({articleInfo:data.article, isLoading:false});
+        })
+        .catch(({response}) => {
+            this.setState({
+            error: {
+                    status: response.status,
+                    message: response.data.msg, 
+                }              
+            })
         })
     }
    render() {
-       const {articleInfo, isLoading} = this.state
+       const {articleInfo, isLoading, error} = this.state
+       if (error) return <ErrorDisplay {...error}/>;
        if(isLoading) return <Loader />;
        return (
            <main className="single-article-page">
                <h2>{articleInfo.title}</h2>
                <p>Topic : {articleInfo.topic}</p>
-       <p>Written date : {articleInfo.created_at.slice(0,10)} by `{articleInfo.author}`</p>
+               <p>Written date : {articleInfo.created_at.slice(0,10)} by `{articleInfo.author}`</p>
                <h4>{articleInfo.body}</h4>
-               <p>Votes: {articleInfo.votes}</p>
+               <VoteUpdater votes={articleInfo.votes} article_id={articleInfo.article_id}/>
                <p>Comments: {articleInfo.comment_count}</p>
            </main>
        )
