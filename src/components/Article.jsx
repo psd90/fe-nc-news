@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Loader from './Loader';
 import ErrorDisplay from './ErrorDisplay';
 import { getArticleById } from '../api';
+import {Link} from '@reach/router';
 import  VoteUpdater  from './VoteUpdater';
 
 
@@ -31,6 +32,7 @@ class Article extends Component {
        const {articleInfo, isLoading, error} = this.state
        if (error) return <ErrorDisplay {...error}/>;
        if(isLoading) return <Loader />;
+       console.log(articleInfo)
        return (
            <main className="single-article-page">
                <h2>{articleInfo.title}</h2>
@@ -38,7 +40,7 @@ class Article extends Component {
                <p>Written date : {articleInfo.created_at.slice(0,10)} by `{articleInfo.author}`</p>
                <h4>{articleInfo.body}</h4>
                <VoteUpdater votes={articleInfo.votes} article_id={articleInfo.article_id}/>
-               <p>Comments: {articleInfo.comment_count}</p>
+               <Link to={`/articles/${articleInfo.article_id}/comments`}> Comments : {articleInfo.comment_count} </Link>
            </main>
        )
    }
